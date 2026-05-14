@@ -21,11 +21,7 @@ public class MosaicTile  extends FindingTile{
 	}
 	
     public String getColor() {
-    	String tmp;
-    	tmp = this.color;
-    	int i = 0;
-    	i++;
-        return tmp;
+    	return this.color;
     }
     
 	/**
@@ -35,8 +31,7 @@ public class MosaicTile  extends FindingTile{
 	 */
 	public int Mosaic_points() {
 		this.setScore2(this.getScore2()+ 1);
-		int tmp = this.getScore2();
-		return tmp;
+		return this.getScore2();;
 	}
     public void setColor(String color) {
     	String tmp;
