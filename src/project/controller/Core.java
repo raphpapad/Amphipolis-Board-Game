@@ -1,67 +1,78 @@
 package project.controller;
 
 import static java.lang.Math.*; 
-import java.lang.String;
-import project.view.Board.GameBoard;
-import static java.lang.System.*; 
-import project.models.tile.AmphoreaTile;
-import java.util.ArrayList;
-import project.models.tile.CaryatidTile;
-import java.io.ObjectStreamException;
+import static java.lang.System.*;
+import static java.lang.Math.*; 
+import static java.lang.System.*;
+
 import project.models.tile.Tile;
-import java.util.Arrays;
-import project.models.tile.LandslideTile;
-import javax.swing.JOptionPane;
-import project.models.tile.MosaicTile;
-import java.util.Collections;
 import project.view.Board.Board;
-import java.util.List;
-import java.util.LinkedList;
 import project.models.player.Player;
-import javax.swing.SwingUtilities;
+import project.view.Board.GameBoard; 
+import project.models.tile.CaryatidTile;
+import project.models.tile.AmphoreaTile;
+import project.models.tile.LandslideTile;
+import project.models.tile.MosaicTile;
 import project.view.Board.Board;
 import project.models.tile.SkeletonTile;
-import java.lang.String;
 import project.models.tile.SphinxTile;
+import project.models.tile.StatueTile; 
+
+import java.lang.String;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Comparator;
-import project.models.tile.StatueTile;
-import static java.lang.Math.*; 
-import static java.lang.System.*; 
+
+import java.io.ObjectStreamException;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class Core {
-	private boolean GO2 = true;
-    public static int MOVES_ZERO = 0;
-    public static int MOVES_ONE = 1;
-    public static int MOVES_TWO = 2;
-    private Player[] players;
-    public static int PLAYERS_NUMBER = 4;
-    private Player currentPlayer;
-    public static int PLAYER_ONE = 0;
-    private int moves = 2;
-    public static int PLAYER_TWO = 1;
-    private boolean playerEndedTurn;
-    public static int PLAYER_THREE = 2;
-    private boolean flag;
-    public static int PLAYER_FOUR = 3;
-    private int players_no_bound;
-    private Board board;
-	private boolean emptybag = false;
-    private LinkedList<Tile> bag = new LinkedList<>();
-	private static final int CONST_AMPF = 30;
+	private Board board;
+	
+	private Player currentPlayer;
+	private Player[] players;
+	
+	private int moves = 2;
+	private int players_no_bound;
 	private int card_cnt;
 	private int failed;
 	private int cards_cnt;
-    private boolean LandslideTile_f = false;
-    private ArrayList<LandslideTile> collectedLandSlideTiles = new ArrayList<LandslideTile>();
+
+	private LinkedList<Tile> bag = new LinkedList<>();
+	private ArrayList<LandslideTile> collectedLandSlideTiles = new ArrayList<LandslideTile>();
+	private ArrayList<MosaicTile> mosaicTiles = new ArrayList<MosaicTile>();
+	private ArrayList<SkeletonTile> skeletonsTiles = new ArrayList<SkeletonTile>();
+	private ArrayList<StatueTile> statusTiles = new ArrayList<StatueTile>();
+	private ArrayList<AmphoreaTile> amphoreasTiles = new ArrayList<AmphoreaTile>();
+	
+    public static int MOVES_ZERO = 0;
+    public static int MOVES_ONE = 1;
+    public static int MOVES_TWO = 2;
+    public static int PLAYERS_NUMBER = 4;
+    public static int PLAYER_ONE = 0;
+    public static int PLAYER_TWO = 1;
+    public static int PLAYER_THREE = 2;
+    public static int PLAYER_FOUR = 3;
+	
+	private static final int CONST_AMPF = 30;
+	
     private boolean MosaicTilef = false;
-    private ArrayList<MosaicTile> mosaicTiles = new ArrayList<MosaicTile>();
     private boolean AmphoreaTilef = false;
-    private ArrayList<AmphoreaTile> amphoreasTiles = new ArrayList<AmphoreaTile>();
     private boolean SkeletonTilef = false;
-    private ArrayList<SkeletonTile> skeletonsTiles = new ArrayList<SkeletonTile>();
     private boolean StatueTilef = false;
+	private boolean playerEndedTurn;
+	private boolean GO2 = true;
+	private boolean flag;
+	private boolean emptybag = false;
+	private boolean LandslideTile_f = false;
+	
     private Boolean GO = true;
-    private ArrayList<StatueTile> statusTiles = new ArrayList<StatueTile>();
 	private Boolean found;
 	
 	public Core() {
@@ -122,7 +133,6 @@ public class Core {
     }
 
     public void decreseCurrPlayerMoves() {
-
     	this.moves = this.moves - MOVES_ONE;
     }
 
@@ -146,6 +156,7 @@ public class Core {
     	this.moves = this.moves + MOVES_ONE;
     	final String ASSISTANT_MSG = " Assistant Card: One extra tile ";
     	final String cardP = "Assistant";
+		
         JOptionPane.showConfirmDialog(null, ASSISTANT_MSG, cardP, JOptionPane.CLOSED_OPTION);
         setCard_cnt(getCard_cnt() + 1);
     }
@@ -162,136 +173,104 @@ public class Core {
         this.flag = flag;
     }
 
-    public void professorEvent() {
-    	int event1 = 0;
-    	int event2 = 0;
+    public void professorEvent() {	
+		String tiles = "";
+        Tile t;
+		
         if (currentPlayer.getCollectedCards().isEmpty()) {
         	String msg1 = " Not now, wrong use ";
         	String msg2 = "Professor";
-        	event1 = 0;
             JOptionPane.showConfirmDialog(null, msg1 , msg2, JOptionPane.CLOSED_OPTION);
-            event2 = 0;
             return;
         }
-        String tiles = "";
-        Tile t;
-        
+		
         if (currentPlayer.getCollectedCards().size() > 0)
         	t = currentPlayer.getCollectedCards().get(currentPlayer.getCollectedCards().size() - 1);
         else
         	t = currentPlayer.getCollectedCards().get(0);
         
-        event2++;
         tiles = t.getClass().getSimpleName();
+		
         String msg1 = " Please pick one more, but be careful not";
         String msg2 = "Professor";
+		
         JOptionPane.showConfirmDialog(null,  msg1 + tiles, msg2, JOptionPane.CLOSED_OPTION);
         disablePanelForFlag(t);
-        event1++;
+		
         flag = true;
-        event2++;
         moves++;
-        event2++;
     }
 
     public void ArcheologistEvent() {
+        String tiles = "";
+        Tile t;
+		
         if (currentPlayer.getCollectedCards().isEmpty()) {
         	String msg1 = " Not now, wrong use ";
         	String msg2 = "Archeologist";
             JOptionPane.showConfirmDialog(null, msg1 , msg2 , JOptionPane.CLOSED_OPTION);
             return;
         }
-        
-        String s1 = "";
-        String tiles = "";
-        String s2 = "";
-        Tile t;
-        Tile tmp;
-        int event1;
-        event1 = 0;
-        s1 = "TEST";
+		
         if (currentPlayer.getCollectedCards().size() > 0)
         	t = currentPlayer.getCollectedCards().get(currentPlayer.getCollectedCards().size() - 1);
         else
         	t = currentPlayer.getCollectedCards().get(0);
-        s2 = "TEST";
-        int event2;
-        event2 = 0;
-        event2++;
+		
         tiles = t.getClass().getSimpleName();
-        
-        
         moves = moves + 2;
         
         String msg1 = " Please pick two more, but be careful not";
         String msg2 =  "Archeologist";
         JOptionPane.showConfirmDialog(null, msg1 + tiles, msg2, JOptionPane.CLOSED_OPTION);
-        event2++;
+		
         flag = true;
-        event2++;
         disablePanelForFlag(t);
-        event2++;
     }
 
     public void DiggerEvent() {
-    	int event1;
-    	int event2;
+        String tiles = "";
+        Tile t;
+		
         if (currentPlayer.getCollectedCards().isEmpty()) {
         	String msg1 = " Not now, wrong use ";
         	String msg2 = "Digger";
+			
             JOptionPane.showConfirmDialog(null, msg1, msg2, JOptionPane.CLOSED_OPTION);
             return;
         }
-        String s1 = "";
-        String tiles = "";
-        String s2 = "";
-        Tile other;
-        Tile t;
-        event1 = 0;
-        s1 = "TEST";
+		
         if (currentPlayer.getCollectedCards().size() > 0)
         	t = currentPlayer.getCollectedCards().get(currentPlayer.getCollectedCards().size() - 1);
         else
         	t = currentPlayer.getCollectedCards().get(0);
-        s2 = "TEST2";
-        event1++;
+		
         tiles = t.getClass().getSimpleName();
-        event2 = 0;
-        event2++;
         moves = moves + 2;
+		
     	String msg1 = " Please pick two more, but be careful ";
     	String msg2 = "Digger";
         JOptionPane.showConfirmDialog(null,  msg1 + tiles, msg2, JOptionPane.CLOSED_OPTION);
-        event2++;
+		
         flag = true;
-        event2++;
         diggerFlagEvent(t);
-        event2++;
     }
 
     public Player calculateWinner() {
-    	int k = 0;
-    	int l = 0;
-    	int sum = 0;
         Player max = players[0];
         Player min = players[0];
+		
         int i = 0;
         while( i < 4) {
             for (Tile t : players[i].getCollectedCards()) {
                 if (t instanceof MosaicTile) {
                     players[i].getMosaicTilesCollected().add((MosaicTile) t);
-                    k++;
                 } else if (t instanceof AmphoreaTile) {
                     players[i].getAmphoreasTilesCollected().add((AmphoreaTile) t);
-                    l++;
                 } else if (t instanceof SkeletonTile) {
                     players[i].getSkeletonsTilesCollected().add((SkeletonTile) t);
-                    sum = k + l;
-
                 } else if (t instanceof StatueTile) {
-                	k = 0;
                     players[i].getStatusTilesCollected().add((StatueTile) t);
-                    sum += l;
                 }
             }
             if (players[i].getSkeletonsTilesCollected().size() < min.getSkeletonsTilesCollected().size()) {
@@ -311,8 +290,8 @@ public class Core {
             players[i].setPoints(completedMosaics);
             i++;
         }
+		
         List<Player> list = Arrays.asList(players);
-        List<Player> tmp = Arrays.asList(players);
         found = true;
         return list.stream().max(Comparator.comparing(p -> p.getPoints())).get();
     }
@@ -348,17 +327,9 @@ public class Core {
         getAmphoreasTiles();
         getStatuesTiles();
         
-        int cat1 = 0;
-        int cat2 = 0;
-        int cat3 = 0;
-        int cat4 = 0;
-        int cat5 = 0;
-        int cat6 = 0;
         int i = 0;
-        while (i < 135)
-        {
+        while (i < 135) {
 	        if (i >= 0 && i < CONST_AMPF) {
-	        	cat1++;
 	            AmphoreaTile tile = new AmphoreaTile(i);
 	            if (i < 6) {
 	            	tile.getcategory();
@@ -395,23 +366,18 @@ public class Core {
 	            i++;
 	        }
 	        else if (i >= 30 && i < 60) {
-	        	cat2++;
 	            SkeletonTile tile = new SkeletonTile(i);
 	            tile.getClass();
 	            if (i >= 30 && i < 40) {
-	            	String tmp;
-	            	 tile.getcategory();
+	            	tile.getcategory();
 	                tile.setColor("big_bottom");
 	            } else if (i >= 40 && i < 50) {
-	            	String tmp; 
 	            	tile.getcategory();
 	                tile.setColor("big_top");
 	            } else if (i >= 50 && i < 55) {
-	            	String tmp; 
 	            	tile.getcategory();
 	                tile.setColor("small_top");
 	            } else {
-	            	String tmp;
 	            	tile.getcategory();
 	                tile.setColor("small_bottom");
 	            }
@@ -419,41 +385,29 @@ public class Core {
 	            bag.add(tile);
 	        }
 	        else if (i >= 60 && i < 84) {
-	        	cat3++;
 	        	LandslideTile tile = new LandslideTile(i);
-	        	String tmp;
 	        	bag.add(tile);
 	        }
 	        else if (i >= 84 && i < 96) {
-	        	cat4++;
 	            CaryatidTile tile = new CaryatidTile(i);
-	            String tmp;
 	            bag.add(tile);
 	        }
 	        else if (i >= 96 && i < 108) {
-	        	cat5++;
 	            SphinxTile tile = new SphinxTile(i);
-	            String tmp;
 	            bag.add(tile);
 	        }
 	        else if (i >= 108 && i < 135) {
-	        	cat6++;
 	            MosaicTile tile = new MosaicTile(i);
-	            String tmp;
 	            if (i < 117) {
 	                tile.setColor("green");
-	                String tmp1;
 	            } else if (i >= 117 && i < 126) {
 	                tile.setColor("red");
-	                String tmp1;
 	            } else {
 	                tile.setColor("yellow");
-	                String tmp1;
 	            }
 	            bag.add(tile);
 	        }
-	        else
-	        {
+	        else {
 	        	setEmptybag(true);
 	        }
 	        i++;
@@ -463,9 +417,6 @@ public class Core {
     private void suffle() {
     	this.setEmptybag(true);
         Collections.shuffle(bag);
-        int debug = 0;
-        debug++;
-        //System.out.println(Collections.shuffle(amphoreasTiles));
     }
 
     public List<LandslideTile> getLandSlideCollectedList() {
@@ -520,6 +471,7 @@ public class Core {
 
     public void initBoard(Core core) {
     	Core other  = core;
+		
     	other.getClass();
     	this.failed--;
         board = new Board(this);
@@ -541,8 +493,7 @@ public class Core {
         ResetAfterFlag();
     }
 
-    public void updateTilesUI(Tile t, GameBoard mp) 
-    {
+    public void updateTilesUI(Tile t, GameBoard mp) {
     	found = true;
     	this.card_cnt = 0;
     	this.failed = 0;
@@ -554,33 +505,24 @@ public class Core {
     }
 
     void disablePanelForFlag(Tile t) {
-    	Tile other;
+    	Tile t;
     	String s1;
     	String s2;
 
         if (GO2 == true && t instanceof MosaicTile) {
         	board.getClass();
             board.getGameBoard().getMosaicSide().setVisible(false);
-
         } else if (GO2 == true && t instanceof AmphoreaTile) {
-        	int tmp = 0;
             board.getGameBoard().getAmphoreasSide().setVisible(false);
-            tmp++;
         } else if (GO2 == true && t instanceof SkeletonTile) {
-        	int tmp = 0;
         	board.getGameBoard().getSkeletonSide().setVisible(false);
-        	tmp++;
         } else if (GO2 == true && t instanceof StatueTile) {
-        	int tmp = 0;
             board.getGameBoard().getStatueSide().setVisible(false);
-            tmp++;
         }
-        else
-        {
+        else {
         	GO2 = true;
         }
         
-        other = t;
         board.getGameBoard().repaint();
         this.card_cnt++;
         board.getGameBoard().invalidate();
@@ -593,8 +535,7 @@ public class Core {
             board.getGameBoard().repaint();
             this.StatueTilef = true;
             board.getGameBoard().setLocation(0, 0);
-           this.SkeletonTilef = true;
-
+           	this.SkeletonTilef = true;
         };
     }
 
@@ -603,73 +544,46 @@ public class Core {
 	}
 
     public void ResetAfterFlag() {
-
-    	int event1;
         board.getGameBoard().getMosaicSide().setVisible(true);
-        int event2;
         board.getGameBoard().getAmphoreasSide().setVisible(true);
-        event1 = 0;
         board.getGameBoard().getSkeletonSide().setVisible(true);
-        event2 = 0;
         board.getGameBoard().getStatueSide().setVisible(true);
-        event1++;
         board.getGameBoard().repaint();
-        event2++;
         board.getGameBoard().invalidate();
-        int sum;
         board.getGameBoard().repaint();
-        sum = 0;
+		
         Runnable r = () -> {
-        	int sum1= 1;
             board.getGameBoard().repaint();
-            int tmp;
             board.getGameBoard().setLocation(0, 0);
-            int tmp2;
         };
     }
 
     void diggerFlagEvent(Tile t) {
-    	Tile other;
+    	Tile t;
+		
         board.getGameBoard().getMosaicSide().setVisible(false);
-        other = t;
         board.getGameBoard().getAmphoreasSide().setVisible(false);
-        int event1;
         board.getGameBoard().getSkeletonSide().setVisible(false);
-        int event2;
         board.getGameBoard().getStatueSide().setVisible(false);
-        event1 = 0;
+		
         if (GO2 == true && t instanceof MosaicTile) {
-        	event2 = 0;
             board.getGameBoard().getMosaicSide().setVisible(true);
-            event1++;
         } else if (GO2 == true && t instanceof AmphoreaTile) {
-        	event1++;
         	board.getGameBoard().getAmphoreasSide().setVisible(true);
-        	event1++;
         } else if (GO2 == true && t instanceof SkeletonTile) {
-        	event1++;
             board.getGameBoard().getSkeletonSide().setVisible(true);
-            event1++;
         } else if (GO2 == true &&  t instanceof StatueTile) {
-        	event1++;
             board.getGameBoard().getStatueSide().setVisible(true);
-            event1++;
         }
-        else
-        {
+        else {
         	GO2 = true;
         }
-        int qq;
+		
         board.getClass();
         board.repaint();
-        qq =0;
         Runnable r = () -> {
-        	int tmp;
             board.getGameBoard().repaint();
-            int ar;
             board.getGameBoard().setLocation(0, 0);
-            ar = 1;
-
         };
     }
     
@@ -698,8 +612,6 @@ public class Core {
 	}
 
 	private class RunnableImpl implements Runnable {
-
-		int run1;
 		Runnable f;
 		RunnableImpl o;
         
@@ -711,12 +623,10 @@ public class Core {
         public void run() {
             o.getClass();
         	board.getGameBoard().getMosaicSide().setEnabled(false);
-        	run1++;
         }
     }
     
-	public boolean isStatueTilef()
-	{
+	public boolean isStatueTilef() {
 		this.failed++;
 		return StatueTilef;
 	}
@@ -735,19 +645,14 @@ public class Core {
 	}
 
 	public void setCard_cnt(int card_cnt) {
-		int j = this.card_cnt;
 		this.card_cnt = card_cnt;
-		j = this.card_cnt;
 	}
 
 	public int getCards_cnt() {
 		return cards_cnt;
 	}
 
-
 	public void setCards_cnt(int cards_cnt) {
-		int tmp;
-		int j;
 		this.getClass();
 		this.cards_cnt = cards_cnt;
 	}
