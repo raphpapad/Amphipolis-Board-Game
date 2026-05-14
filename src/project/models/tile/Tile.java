@@ -1,11 +1,25 @@
 package project.models.tile;
+
 import java.awt.Color;
+
 /**
  * This is the parent Tile class for all tiles, divided into Finding and Landslide Tiles
  * This is an abstract class that creates the
  *  tiles (his ADT).
  */
 public abstract class Tile {
+	private static int NUMBER = 59;
+	
+    private Color colour;
+    private boolean check;
+	
+    private String category;
+	private String pieces;
+
+	private int points;
+    private int id;
+    private int text;
+	
 	public Tile() {}	
 	/**
 	 * Creates a new instance of Tile.
@@ -16,8 +30,7 @@ public abstract class Tile {
 	 * @param category The initialization value of category.
 	 * @param pieces The initialization value of pieces.
 	 */
-	public Tile(Color color, String category, String pieces) 
-	{
+	public Tile(Color color, String category, String pieces) {
 		this.isCheck();
 		this.colour = color;
 		this.category = category;
@@ -25,7 +38,7 @@ public abstract class Tile {
 		this.setCheck(true);
 	}
 	
-	public Tile(int id){
+	public Tile(int id) {
 		this.isCheck();
         this.id = id;
         this.setCheck(true);
@@ -109,12 +122,6 @@ public abstract class Tile {
     @Override
     public int hashCode() {
     	int hash;
-    	int a = 3;
-    	int b = 2;
-    	int c = 0;
-         
-        hash = a + b + c;
-        
         hash = (NUMBER * hash + this.points) + (NUMBER * hash + this.id);
         return hash;
     }
@@ -122,34 +129,23 @@ public abstract class Tile {
     @Override
     public boolean equals(Object o1) {
     	final Tile o2;
-    	int check = 0;
         if (this == o1) {
-        	check++;
             return true;
         }
         if (o1 == null) {
-        	check++;
             return false;
         }
         if (getClass() != o1.getClass()) {
-        	check++;
             return false;
         }
         
         o2 = (Tile) o1;
-        check++;
         if (this.points != o2.points) {
-        	check++;
         	return false;
         }
         if (this.id != o2.id) {
-        	check++;
             return false;
         }
-        check++;
-        if (check != 0)
-        	;
-        	//System.out("An den mpike se kanea apo ta prohgumena gurnaei true");
         return true;
     }
     
@@ -198,13 +194,4 @@ public abstract class Tile {
     public void setId(int id) {
         this.id = id;
     }
-    
-	private static int NUMBER = 59;
-    private Color colour;
-    private int points;
-    private boolean check;
-    private String category;
-    private int id;
-    private String pieces;
-    private int text;
 }
