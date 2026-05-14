@@ -1,6 +1,6 @@
 package project.controller;
  public class Game {
-	 /** Auto einai to entry point gia to game mas */
+	 /** Entry point for Game */
     public static void main(String[] args) {
     	int stats = 0;
     	Controller GO =  new Controller();
