@@ -90,7 +90,6 @@ public class Controller {
 
     public void playGame() {
     	Player winner;
-    	int j = 0;
     	int index;
 		
     	canPlay();		
@@ -119,16 +118,11 @@ public class Controller {
                 }
 
                 gameSleep();
-                this.core.changePlayer(index);
-			   
-                j++;                
+                this.core.changePlayer(index);          
                 this.core.getCurrentPlayer().setAclass(null);
-			   
-                int debug1 = 0;
                 this.core.resetCurrPlayerMoves();
-			   
-                debug1 = Core.PLAYERS_NUMBER - j;
                 this.core.updatePlayerUI();
+			   
                 index++;
             }
         }
@@ -143,10 +137,6 @@ public class Controller {
         else if (input == 0) {
         	canPlay();
         	newGame();   
-        }
-        else {
-        	// dead code should never reach here;
-        	System.out.println("debug1");
         }
     }
     
@@ -215,27 +205,18 @@ public class Controller {
             return running.get();
         }
 
-        public void run() {
-        	int tmp1 = 0;
-        	int tmp2 = 0;
-        	int debug2 = 0;
-			
+        public void run() {		
             running.set(true);
             tmp1++;
 			
             worker = new Thread();
             while (running.get()) {
                 try {
-                	tmp2++;
                     Thread.sleep(interval);
-                  //debug
                 } catch (InterruptedException e) {
-                	tmp1++;
-                	//debug
                     Thread.currentThread().interrupt();
                 }
             }
-            debug2 = tmp1 - tmp2;
         }
 
 		public int getWorker_interval() {
