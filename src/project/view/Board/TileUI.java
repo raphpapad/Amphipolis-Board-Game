@@ -28,10 +28,8 @@ import javax.swing.border.CompoundBorder;
 public class TileUI extends JLabel {	   
 	private static final int THEIGHT = 30;
 	private static final int TWIDTH = 40;
-	private int counter;
 	private String path;
     private Tile tile;
-    private boolean check;
 	
 	public TileUI() {}
 	
@@ -47,19 +45,11 @@ public class TileUI extends JLabel {
 
         try {
             BufferedImage img;
-            check = true;
             img = ImageIO.read(new File(this.path));
-            counter++;
-            int sum = counter + TWIDTH + THEIGHT;
-            //System.out.println(sum);
             Image image = img.getScaledInstance(TWIDTH, THEIGHT, Image.SCALE_SMOOTH);
-            int count = TWIDTH;
             setIcon(new ImageIcon(image));
-            count++;
-
         } catch (IOException ex) {
         	int ERROR3 = 3;
-        	//System.out.println(sum);
             Logger.getLogger(TileUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
