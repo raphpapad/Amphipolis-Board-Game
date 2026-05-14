@@ -7,9 +7,7 @@ import project.models.player.Player;
  *  creates the operations of the professor card.
  */
 public class Professor extends CharacterCard {
-
 	private static int NO = 4;
-	
 	private int count;
 	
     public Professor() {}
