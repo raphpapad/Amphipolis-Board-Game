@@ -32,7 +32,7 @@ public class Board extends JFrame {
     private final CollectedSide collectedSide;
 	private final GameBoard gameBoard;
 	private boolean starting;
-	/* FindingTiles */
+
 	private MosaicTile[] Mosaic_board;
 	private AmphoreaTile[] Amphora_board;
 	private StatueTile[] Statue_board;
@@ -59,7 +59,6 @@ public class Board extends JFrame {
 	 */
 	public Board(boolean starting, boolean finished, LandslideTile[][] landslide_board, MosaicTile[] mosaic_board,
 			AmphoreaTile[] amphora_board, StatueTile[] statue_board, SkeletonTile[] skeleton_board) {
-
 		this.gameBoard = new GameBoard(  this.core);
 	    this.PlayerSide = new PlayerSide(core);
 	    this.PlayerSide.setGameBoard(gameBoard);
@@ -76,35 +75,41 @@ public class Board extends JFrame {
     public Board(Core core) {
     	this.core= core;
     	this.check = true;
-    	if (check)
-    	{
+		
+    	if (check) {
 	        this.starting = false;
 			this.finished = false;
 	        this.gameBoard = new GameBoard(  this.core);
 			this.Landslide_board = new LandslideTile[4][4];
 	        this.PlayerSide = new PlayerSide(core);
 	        this.PlayerSide.setGameBoard(gameBoard);
+			
 	        FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 	        layout.setVgap(0);
 	        this.Mosaic_board = new MosaicTile[27];
 	        layout.setHgap(0);
+			
 	        JPanel p = new JPanel(layout);
 	        p.add("", gameBoard);
 	        p.add("", PlayerSide);
+			
 	        this.collectedSide = new CollectedSide(core);
+			
 	        p.add(collectedSide);
 	        add(p);
+			
 	        this.Amphora_board = new AmphoreaTile[30];
 	        this.setVisible(true);
+			
 	        this.Statue_board = new StatueTile[24];
 	        this.setSize(870, 736);
+			
 	        this.Skeleton_board = new SkeletonTile[30];
 	        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	        this.setLocation(0, 0);
 	        setResizable(false);
     	}
-    	else
-    	{
+    	else {
     		this.collectedSide = new CollectedSide(core);
 	        this.gameBoard = new GameBoard(  this.core);
 			this.Landslide_board = new LandslideTile[4][4];
@@ -117,17 +122,10 @@ public class Board extends JFrame {
     public GameBoard getGameBoard() {
         return this.gameBoard;
     }
+	
     public PlayerSide getPlayerSide() {
         return this.PlayerSide;
     }
-    
-    /**
-   	 * <br>precondition: Valid ADT
-   	 * <br>postcondition: initialization
-   	 */
-	public void init() {
-		
-	}
 	
 	/**
 	 * <br>precondition: Returns the tile of starting.
@@ -166,30 +164,6 @@ public class Board extends JFrame {
     }
     
     /**
-   	 * <br>precondition: Valid tiles
-   	 * <br>postcondition: Materializes Landslies
-   	 */
-	public void region_Landslise() {
-		
-	}
-	
-	/**
-   	 * <br>precondition: Valid tiles
-   	 * <br>postcondition: Materializes tile's regions
-   	 */
-	public void region_Tiles() {
-		
-	}
-    
-	/**
-   	 * <br>precondition: Valid player
-   	 * <br>postcondition: Materializes the turn.
-   	 */
-    public void next_turn_player() {
-    	
-    }
-    
-    /**
    	 * <br>precondition: Valid tiles and correct
    	 * matirialization of landslides
    	 * <br>postcondition: Materializes the end of game
@@ -206,38 +180,18 @@ public class Board extends JFrame {
     }
     
     public class CollectedSide extends JPanel {
-
+		private int collect;
+		
         private static final int CO_HEIGHT = 80;
 		private static final int CO_WIDTH = 1165;
 
 		public CollectedSide(Core core) {
-        	int i;
-        	int j;
-			
         	setStarting(true);
-        	
-			i = 0;
-			j = 0;
-			
             setPreferredSize(new Dimension(CO_WIDTH, CO_HEIGHT));
-            
-            i = CO_WIDTH;
-            j = CO_HEIGHT;
-            
             setLayout(new FlowLayout(FlowLayout.LEADING));
-            //System.out.println(i);
-            //System.out.println(j);
-            if (i > j)
-            {
-            	//System.out.println(i);
-                //System.out.println(j);
-                i = 0;
-                j = 0;
-            }
         }
         
-        public void setCollect(int collect)
-        {
+        public void setCollect(int collect) {
         	this.collect = collect;
         }
         
@@ -252,6 +206,7 @@ public class Board extends JFrame {
                 this.move(0, 0);
                 this.move(0, 0);
             };
+			
             this.revalidate();
             for (Tile t : core.getCurrentPlayer().getCollectedCards()) {
                 if (t instanceof AmphoreaTile) {
@@ -260,17 +215,14 @@ public class Board extends JFrame {
                 } else if (t instanceof SphinxTile) {
                     add(new TileUI("images_2020/" + "sphinx" + ".png", null));
                 } else if (t instanceof CaryatidTile) {
-
                     add(new TileUI("images_2020/" + "caryatid" + ".png", null));
                 } else if (t instanceof MosaicTile) {
                     String color = "mosaic_" + ((MosaicTile) t).getColor();
-                    //System.out.println("color "+ color);
                     add(new TileUI("images_2020/" + color + ".png", null));
                 } else {
                     String color = "skeleton_" + ((SkeletonTile) t).getColor();
                     add(new TileUI("images_2020/" + color + ".png", null));
                 }
-
             }
             Runnable rr = () -> {
                 this.repaint();
@@ -280,11 +232,8 @@ public class Board extends JFrame {
 
         }
        
-        public int getCollect()
-        {
+        public int getCollect() {
         	return this.collect;
-        }
-        
-    	private int collect;
+        }            
     }   
 }
