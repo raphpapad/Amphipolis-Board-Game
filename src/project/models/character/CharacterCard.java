@@ -3,8 +3,11 @@ package project.models.character;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Arrays;
-import project.models.player.Player;
+
 import java.lang.String;
+
+import project.models.player.Player;
+
 /**
  *  <br>precondition: -
  *  <br>postcondition: A new instance of Character will be created. 
@@ -13,6 +16,24 @@ import java.lang.String;
  *  the images of the game.
  */
 public abstract class CharacterCard {
+	private static int NO = 4;
+	private int counter;
+	
+	private ArrayList<CharacterCard> Cards;
+	
+	private Boolean isUsed;
+	private boolean played;
+	
+	private String belongs;
+	private String color;
+	private String image;
+    private String job;
+    private String text;
+	
+    private Player player;
+	
+	public int value;
+	
 	/**
 	 * Creates an instance of Character.
 	 * <br>precondition: -
@@ -167,8 +188,7 @@ public abstract class CharacterCard {
 	 * <br>postcondition: Puts the new Cards in ArrayList.
 	 * @param Cards The new one from the setCards.
 	 */
-    public void setCards(ArrayList<CharacterCard> Cards)
-    {
+    public void setCards(ArrayList<CharacterCard> Cards) {
     	this.Cards = Cards;
     }
     
@@ -254,26 +274,4 @@ public abstract class CharacterCard {
     		return false;
     	return true;
     }
-    
-    /**
-	 * <br>precondition: The string must be valid.
-	 * <br>postcondition: Returns the player that the cards belongs
-	 * @return The player.
-	 */
-    public String Belongs() {
-    	return "lala";
-    }
-    
-	private static int NO = 4;
-	private int counter;
-	private Boolean isUsed;
-	private boolean played;
-	private String belongs;
-	private String color;
-	private ArrayList<CharacterCard> Cards;
-	private String image;
-    private String job;
-    private String text;
-    int value;
-    private Player player;
 }
