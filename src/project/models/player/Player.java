@@ -1,38 +1,42 @@
 package project.models.player;
 
 import java.awt.*;
+import java.awt.color.CMMException;
+import java.awt.Color;
+
+import java.io.BufferedWriter;
 import java.io.BufferedInputStream;
 import java.io.File;
-import project.models.character.Digger;
-import java.lang.Enum;
-import java.lang.String;
-import project.models.tile.Tile;
-import java.io.BufferedWriter;
-import java.util.ArrayList;
 import java.io.CharArrayReader;
-import project.models.tile.StatueTile;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import project.models.character.Assistant;
 import java.io.Console;
-import project.models.tile.MosaicTile;
 import java.io.FileNotFoundException;
-import project.models.character.Professor;
-import java.awt.color.CMMException;
-import project.models.character.CharacterCard;
 import java.io.IOError;
-import java.util.AbstractMap;
 import java.io.ObjectStreamException;
-import project.models.tile.AmphoreaTile;
 import java.io.InputStream;
-import java.awt.Color;
 import java.io.OptionalDataException;
-import java.util.AbstractList;
 import java.io.IOException;
-import java.lang.AbstractMethodError;
+
+import project.models.tile.AmphoreaTile;
+import project.models.character.Digger;
+import project.models.tile.Tile;
+import project.models.tile.StatueTile;
+import project.models.character.Assistant;
+import project.models.tile.MosaicTile;
+import project.models.character.Professor;
+import project.models.character.CharacterCard;
 import project.models.tile.SkeletonTile;
-import java.lang.annotation.AnnotationTypeMismatchException;
 import project.models.character.Archeologist;
+
+import java.lang.Enum;
+import java.lang.String;
+import java.lang.AbstractMethodError;
+import java.lang.annotation.AnnotationTypeMismatchException;
+
+import java.util.ArrayList;
+import java.util.AbstractMap;
+import java.util.AbstractList;
 
 /**
  *  This is an abstract class that creates the
@@ -40,33 +44,39 @@ import project.models.character.Archeologist;
  */
 public class Player {
 	private static int CARDS_NUMBER = 4;
-	private Class Aclass;
 	private static int CARD_ONE = 0;
-    private String id;
-    private static int CARD_TWO = 1;
-    private String name;
-    private static int CARD_THREE = 2;
-    private ArrayList<Tile> tiles;
-    private static int CARD_FOUR = 3;
-    private String color;
-    private boolean check;
-    private Color colour;
-    private Archeologist archae;
-    ArrayList<MosaicTile> mosaicTilesCollected = new ArrayList<MosaicTile>();
-    private Assistant assistant;
-    ArrayList<AmphoreaTile> amphoreasTilesCollected = new ArrayList<AmphoreaTile>();
-    private Professor professor;
-    ArrayList<SkeletonTile> skeletonsTilesCollected = new ArrayList<SkeletonTile>();
-    private Digger digger;
-    ArrayList<StatueTile> statusTilesCollected = new ArrayList<StatueTile>();
+	private static int CARD_TWO = 1;
+	private static int CARD_THREE = 2;
+	private static int CARD_FOUR = 3;
+	
+	private int points;
 	private int totalpoints;
+	
+	private Class Aclass;
+	private Color colour;
+	private Archeologist archae;
+	private Assistant assistant;
+	private Professor professor;
+	private Digger digger;
+
+    private String id;    
+    private String name;
+    private String color;
+	
+    private ArrayList<Tile> tiles;
+	private CharacterCard[] chars;
+
+	private Boolean play;
+	
+    private boolean check;
+	
+	public boolean usedCharacterThisTurn;
+	
+    ArrayList<MosaicTile> mosaicTilesCollected = new ArrayList<MosaicTile>();
+    ArrayList<AmphoreaTile> amphoreasTilesCollected = new ArrayList<AmphoreaTile>();
+    ArrayList<SkeletonTile> skeletonsTilesCollected = new ArrayList<SkeletonTile>();
+    ArrayList<StatueTile> statusTilesCollected = new ArrayList<StatueTile>();
     ArrayList<Tile> collectedCards = new ArrayList<Tile>();
-    private Boolean play;
-    public boolean usedCharacterThisTurn;
-    private int debug1 = 0;
-    private int points;
-    private int debug2 = 0;
-    private CharacterCard[] chars;
 	
 	/** 
 	 * Creates a new instance of Player.
@@ -74,7 +84,6 @@ public class Player {
 	 * <br>postcondition: A new instance of Player will be created. 
 	 */
     public Player() {
-
         chars = new CharacterCard[4];
     }
     
@@ -109,19 +118,14 @@ public class Player {
 	}
 
     public Player(String name, String color) {
-    	int index;
         this.name = name;
         this.color = color;
         this.chars = new CharacterCard[CARDS_NUMBER];
-        index = 0;
         this.chars[CARD_ONE] = new Archeologist("images_2020/archaeologist.png", this);
-        index++;
         this.chars[CARD_TWO] = new Assistant("images_2020/assistant.png", this);
-        index++;
         this.chars[CARD_THREE] = new Digger("images_2020/digger.png", this);
-        index++;
         this.chars[CARD_FOUR] = new Professor("images_2020/professor.png", this);
-        index = CARDS_NUMBER;
+		
         usedCharacterThisTurn = false;
     }
     
@@ -190,10 +194,7 @@ public class Player {
 		this.play = play;
 	}
 	
-	
     public void setColor(String color) {
-    	// color san string 
-    	//System.out.println(color);
        this.color = color;
        if (this.colour != null && this.color.equals(this.colour.toString()))
        	check = true;
@@ -211,8 +212,6 @@ public class Player {
 	}
 	
     public CharacterCard[] getChars() {
-    	this.debug1++;
-    	this.debug2--;
         return chars;
     }
     
@@ -235,15 +234,11 @@ public class Player {
 	 * @param assistant The assistant
 	 */
 	public void setAssistant(Assistant assistant) {
-		this.debug1++;
 		this.assistant = assistant;
-		this.debug2--;
 	}
 	
     public void setChars(CharacterCard[] chars) {
-    	this.debug2--;
         this.chars = chars;
-        this.debug1++;
     }
     
 	/**
@@ -275,7 +270,6 @@ public class Player {
     public ArrayList<AmphoreaTile> getAmphoreasTilesCollected() {
         return amphoreasTilesCollected;
     }
-    
 	
 	/**
 	 * <br>precondition: The card must be
@@ -288,7 +282,6 @@ public class Player {
 		this.digger = digger;
 	}
 	
-
     public ArrayList<SkeletonTile> getSkeletonsTilesCollected() {
         return skeletonsTilesCollected;
     }
@@ -320,14 +313,6 @@ public class Player {
 		this.professor = professor;
 	}
 	
-	/**
-	 * <br>precondition: Give ADT of the players 
-	 * <br>postcondition: Initialize all the players
-	 */
-	public void init() {
-		
-	}
-	
     public ArrayList<Tile> getCollectedCards() {
         return collectedCards;
     }
@@ -343,9 +328,7 @@ public class Player {
     }
 
     public void setCollectedCards(ArrayList<Tile> collectedCards) {
-    	debug1++;
         this.collectedCards = collectedCards;
-        debug2--;
     }
 
     public boolean isUsedCharacterThisTurn() {
@@ -354,8 +337,7 @@ public class Player {
     		return usedCharacterThisTurn;
     	}
     	else
-    		return usedCharacterThisTurn;
-        
+    		return usedCharacterThisTurn;   
     }
 
     public void setUsedCharacterThisTurn(boolean usedCharacterThisTurn) {
@@ -364,8 +346,6 @@ public class Player {
     }
 
     public Class getAclass() {
-    	debug1++;
-    	//System.out.println(debug1);
         return Aclass;
     }
     
@@ -381,9 +361,7 @@ public class Player {
 	}
 	
     public void setAclass(Class Aclass) {
-    	this.debug1 = 0;
         this.Aclass = Aclass;
-        debug1++;
     }
 
 	/**
@@ -392,9 +370,7 @@ public class Player {
 	 * @return The points from getPoints
 	 */
     public int getPoints() {
-    	int tmp;
-    	tmp = points;
-        return tmp;
+        return points;
     }
 
 	 /**
@@ -406,7 +382,6 @@ public class Player {
     public void setPoints(int points) {
     	this.check = true;
         this.points = points;
-        debug1++;
     }
     
 	
@@ -420,26 +395,12 @@ public class Player {
 	public Archeologist getArchae() {
 		return archae;
 	}
-	
-	public int getDebug1() {
-		return debug1;
-	}
-
-	public void setDebug1(int debug1) {
-		this.debug1 = debug1;
-	}
 
 	public int getTotalpoints() {
-		debug2--;
-		//System.out.println(totalpoints);
-	    //System.out.println(debug2);
 		return totalpoints;
 	}
 
 	public void setTotalpoints(int totalpoints) {
-		debug2--;
-		//System.out.println(totalpoints);
-		//System.out.println(debug2);
 		this.totalpoints = totalpoints;
 	}
 
