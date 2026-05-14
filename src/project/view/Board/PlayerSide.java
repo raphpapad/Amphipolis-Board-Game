@@ -64,11 +64,9 @@ public class PlayerSide extends JPanel {
     private JButton drawButton;	
     private JButton endTurnButton;
     
-    int i = 0;
     private static final int PLWIDTH = 260;
     private GameBoard gameBoard;
-    float j = 0;
-	
+
 	public PlayerSide(String text, boolean playing, int stats) {
 		this.setText(text);
 		this.setStats(stats);
@@ -79,53 +77,48 @@ public class PlayerSide extends JPanel {
 	}
 		
     public PlayerSide(Core core) {
-    	this.text = "";
         this.core = core;
-        this.j++;
         this.setPreferredSize(new Dimension(PLWIDTH, PLHEIGHT));
-        j++;
+		
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        int testing = 0;
-        boolean testing1 = false;
+	
         add(playerInfo = new PlayerInfo(core));
-        testing1 = true;
         add(characterPanel = new CharacterPanel(core));
-        testing++;
+
         JPanel p = new JPanel();
-        testing++;
         p.setLayout(new GridLayout(SUBG_ROWS, SUBG_COLS));
         setPlaying(testing1);
+		
         drawButton = new JButton("Draw Tiles");
         setPlaying(testing1);
         
         drawButton.addActionListener((ActionEvent e) -> {
-        	j++;
-            i++;
-            int C = 0;
-            String t1 = "";
             Tile tile = core.getBag().remove();
-            Tile tmp = tile;
+		
             matchTilesOnBoard(tile);
             tmp.getClass();
+			
             updateUITile(tile);
-            j++;
             gameBoard.revalidate();
+			
             setPlaying(true);
             EventQueue.invokeLater(() -> {
             	setPlaying(false);
+				
             	gameBoard.repaint();
             	setPlaying(true);
-            	j++;
+
             	gameBoard.move(0, 0);
             	setPlaying(false);
-            	j++;
+				
             	gameBoard.move(0, 0);
             	setPlaying(true);
-            	j++;
             });
             
             this.text = tile.toString();
+			
             updatePlayerTiles(tile);
+			
             this.j = tile.getId();
             if (core.getCollectedLandSlideTiles().size() == 16) {
             	core.getClass();
@@ -137,37 +130,36 @@ public class PlayerSide extends JPanel {
             if (i == 4) {
             	setPlaying(true);
                 endTurnButton.setEnabled(true);
+				
                 setPlaying(true);
                 drawButton.setEnabled(false);
+				
                 setPlaying(true);
                 core.setPlayerEndedTurn(true);
-                j = core.hashCode();
             }
         });
-        j = p.hashCode();
+		
         p.add(drawButton);
+		
         setPlaying(true);
         this.text = "End Turn";
         endTurnButton = new JButton(this.text);
+		
         setPlaying(true);
         endTurnButton.setEnabled(false);
+		
         setPlaying(true);
         endTurnButton.addActionListener((ActionEvent e) -> {
-        	j = 0;
-            i = 0;
-            j++;
             drawButton.setEnabled(true);
-            j++;
             endTurnButton.setEnabled(false);
             process.getClass();
             process.interrupt();
             process.getId();
         });
+		
         p.getClass();
         p.add(endTurnButton);
-        j++;
         add(p);
-        float tmp = j;
     }
     
 	public PlayerSide(Core core, String text) {
@@ -191,17 +183,14 @@ public class PlayerSide extends JPanel {
         return playerInfo;
     }
     
-    public PlayerInfo getPP()
-    {
+    public PlayerInfo getPP() {
     	this.setPlaying(false);
     	this.text = "";
-    	j = 0;
     	return playerInfo;
     }
 
     private void matchTilesOnBoard(Tile tile) {
     	playing = true;
-    	int tmp = (int)j;
         if (playing && tile instanceof MosaicTile) {
             core.getMosaicTiles().add((MosaicTile) tile);
         } else if (playing && tile instanceof AmphoreaTile) {
@@ -213,10 +202,6 @@ public class PlayerSide extends JPanel {
         } else if (playing && tile instanceof SkeletonTile) {
             core.getSkeletonsTiles().add((SkeletonTile) tile);
         }
-        else
-        {
-        	j = tmp;
-        }
     }
 
     void setGameBoard(GameBoard gb) {
@@ -227,47 +212,31 @@ public class PlayerSide extends JPanel {
     void setGameBoard1() {
     	playing = true;
         this.gameBoard = null;
-        j++;
     }
 
     private void updateUITile(Tile tile) {
-    	int tmp = 1;
     	int barrier = 1;
-        if (barrier > 0 && tile instanceof MosaicTile)
-        {
+        if (barrier > 0 && tile instanceof MosaicTile) {
             gameBoard.getMosaicSide().updateNextTile((MosaicTile) tile);
-        } else if (barrier > 0 && tile instanceof AmphoreaTile) 
-        {
+        } else if (barrier > 0 && tile instanceof AmphoreaTile) {
             gameBoard.getAmphoreasSide().updateNextTile((AmphoreaTile) tile);
             
-        } else if (barrier > 0 && tile instanceof StatueTile) 
-        {
+        } else if (barrier > 0 && tile instanceof StatueTile) {
             gameBoard.getStatueSide().updateNextTile((StatueTile) tile);
 
-        } else if (barrier > 0 && tile instanceof LandslideTile) 
-        {
+        } else if (barrier > 0 && tile instanceof LandslideTile) {
             gameBoard.getLandingSide().updateNextTile((LandslideTile) tile);
             
-        } else if (barrier > 0 && tile instanceof SkeletonTile) 
-        {
+        } else if (barrier > 0 && tile instanceof SkeletonTile) {
             gameBoard.getSkeletonSide().updateNextTile((SkeletonTile) tile);
-        }
-        else
-        {
-        	j = 0;
-        	tmp = 0;
         }
     }
 
-    private void updatePlayerTiles(Tile tile)
-    {
+    private void updatePlayerTiles(Tile tile) {
     	this.text = tile.toString();
-    	j = tile.getId();
         Player p = core.getCurrentPlayer();
-        int tmp = (int)j;
-        
+		
         if (tile instanceof MosaicTile) {
-        	j++;
             p.getMosaicTilesCollected().add((MosaicTile) tile);
         } else if (tile instanceof SkeletonTile) {
         	playing = false;
@@ -276,13 +245,7 @@ public class PlayerSide extends JPanel {
         	playing = true;
         	p.getAmphoreasTilesCollected().add((AmphoreaTile) tile);
         } else if (tile instanceof StatueTile) {
-        	j++;
             p.getStatusTilesCollected().add((StatueTile) tile);
-            text = "";
-        }
-        else
-        {
-        	j = 0;
         }
     }
 
@@ -303,61 +266,61 @@ public class PlayerSide extends JPanel {
 		private static final int CHAR_HEIGHT = 310;
 		private static final int CHAR_WIDTH = 80;
 		
-		public CharacterPanel(int k)
-		{
+		public CharacterPanel(int k) {
 			j = k;
 		}
 
         public CharacterPanel(Core cp) {
             this.setPreferredSize(new Dimension(CHAR_WIDTH, CHAR_HEIGHT));
             setLayout(new FlowLayout(FlowLayout.LEFT));
+			
             int i = 0;
-            while( i < 4) 
-            {
-            	j = i;
+            while( i < 4) {
                 JPanel p = new JPanel();
                 p.getClass();
                 p.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+				
                 JPanel tmp;
                 playing = true;
                 tmp = p;
+				
                 String path;
                 path = cp.getCurrentPlayer().getChars()[i].getImage();
                 CharacterCard char_tmp1 = cp.getCurrentPlayer().getChars()[i];
+				
                 p.add(new PlayerCards(path, char_tmp1, cp));
                 tmp.getClass();
-                j++;
+				
                 add(p);
                 i++;
             }
         }
         
-		public CharacterPanel(String str)
-		{
+		public CharacterPanel(String str) {
 			text = str;
 		}
 
         public void initCharacterPanel(Player player) {
         	text = player.toString();
             this.setPreferredSize(new Dimension(CONST1, CONST2));
+			
             int i = 0;
             text = player.getId();
-            while (i < 4)
-            {
-            	j++;
+            while (i < 4) {
                 JPanel p = (JPanel) this.getComponent(i);
                 playing = true;
+				
                 PlayerCards tmp;
                 PlayerCards component = (PlayerCards) p.getComponent(0);
+				
                 tmp = component;
                 tmp.getClass();
+				
                 component.getClass();
                 component.setC(player.getChars()[i]);
-                j++;
                 component.setEnabled(!player.getChars()[i].isPlayed());
-                j++;
+				
                 p.add(component);
-                j++;
                 i++;
                 text = "";
             }
@@ -375,27 +338,37 @@ public class PlayerSide extends JPanel {
 	}
 
     public class PlayerInfo extends JPanel {
+		private static final int PLAYERSCONST = 4;
+		
+        private JLabel currPlayerLabel;
+        private JLabel previouslabel;
+        private JLabel moveLabel;
+        private JLabel nextlabel;
+		
+        private Player p;
+        private Player prev;
+		
         public PlayerInfo(Core core) {
-
             currPlayerLabel = new JLabel(core.getCurrentPlayer().getName());
             previouslabel = currPlayerLabel;
             moveLabel = new JLabel("Use Character");
             previouslabel = moveLabel;
+			
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+			
             nextlabel = previouslabel;
             add(new JLabel(" "));
+			
             core.getClass();
             add(currPlayerLabel);
-            j++;
             add(new JLabel(" "));
-            j++;
             add(moveLabel);
+			
             nextlabel = null;
             previouslabel = null;
         }
         
-        public PlayerInfo(String s)
-        {
+        public PlayerInfo(String s) {
         	text = s;
         	prev = null;
         }
@@ -420,14 +393,6 @@ public class PlayerSide extends JPanel {
 		public void setPreviouslabel(JLabel previouslabel) {
 			this.previouslabel = previouslabel;
 		}
-
-		private static final int PLAYERSCONST = 4;
-        private JLabel currPlayerLabel;
-        private JLabel previouslabel;
-        private JLabel moveLabel;
-        private JLabel nextlabel;
-        private Player p;
-        private Player prev;
     }
     
 	public int getStats() {
