@@ -7,9 +7,7 @@ import project.models.player.Player;
  *  creates the operations of the digger card.
  */
 public class Digger extends CharacterCard {
-
 	private static int NO = 4;
-	
 	private int count;
 	
     public Digger() {}
@@ -32,10 +30,6 @@ public class Digger extends CharacterCard {
       this.setPlayer(p);
     }
 
-    /**
-     * 
-     * @return
-     */
 	public int getCount() {
 		return count;
 	}
