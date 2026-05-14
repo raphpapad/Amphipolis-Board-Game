@@ -4,7 +4,9 @@ package project.models.tile;
  * This is a subclass of the class StatueTile that finds
  * how many caryatids the player has.
  */
-public class CaryatidTile  extends StatueTile{
+public class CaryatidTile  extends StatueTile {
+	private int pl1;
+	
 	public CaryatidTile(int id) {
         super(id);
     }
@@ -35,6 +37,4 @@ public class CaryatidTile  extends StatueTile{
 	public void setPl1(int pl1) {
 		this.pl1 = pl1;
 	}
-
-	private int pl1;
 }
